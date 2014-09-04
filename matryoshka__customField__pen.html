@@ -1,10 +1,8 @@
 <template name="matryoshka__customField__pen">
-
+	
 	{{#if browserIsSupported }}
 
-		<div id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-pen-editor">
-			{{{ matryoshka__getFieldValue ../.. }}}
-		</div>
+		<div id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-pen-editor">{{{ matryoshka__getFieldValue ../.. }}}</div>
 
 	{{else}}
 

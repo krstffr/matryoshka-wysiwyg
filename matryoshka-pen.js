@@ -7,7 +7,23 @@ function MatryoshkaPenHandler() {
 	that.fieldTypeObject = {
 		name: 'pen',
 		templateFileName: 'matryoshka__customField__pen',
-		getContentJqueryMethod: 'html'
+		saveMethod: function () {
+			// Iterate over each "cached" field content and store it.
+			_.each(that.nestablesToSaveLater, function( toSave, key ){
+				// Prepare the stuff to be saved, remove all space chars.
+				toSave.value = toSave.value.replace(/\s+/g, " ").trim();
+				MatryoshkaPen.storeNestable( toSave.value, toSave.key, key );
+			});
+			return Session.get('matryoshkaCurrentNestable');
+		}
+	};
+
+	// These are the default options for the editor.
+	// Maybe these should include more stuff?
+	that.editorOptions = {
+		class: 'pen',
+		list: ['bold', 'italic', 'h1', 'h2', 'h3', 'createlink'],
+		stay: false
 	};
 
 	// Here all changes are stored, and will be saved when we choose to
@@ -17,24 +33,11 @@ function MatryoshkaPenHandler() {
 	// Is needed because of weird current-HTML-content-vs-the-session-contents bug.
 	// Probably something with contenteditable vs. Meteor.js
 	that.storeNestable = function ( value, key, matryoshkaId ) {
+		$('.matryoshka-pen-editor--to-be-saved').each(function () {
+			$(this).height( $(this).height() ).html(' ');
+		});
 		var updatedSession = Matryoshka.addValueInObjectBasedOnId( Session.get('matryoshkaCurrentNestable'), matryoshkaId, 'put', key, value);
 		Session.set('matryoshkaCurrentNestable', updatedSession );
-	};
-
-	// This method adds events to the Matroshka save button, so that all content will
-	// be saved to the Session before the DB save.
-	that.addSaveBehaviour = function () {
-		$('.matroyska-nestable-go-live')
-		// Remove all currently bound click events
-		.off('click')
-		.on('click', function () {
-			$('.matryoshka-pen-editor').height( $('.matryoshka-pen-editor').height() ).html(' ');
-			_.each(that.nestablesToSaveLater, function( toSave, key ){
-				// Prepare the stuff to be saved, remove all space chars.
-				toSave.value = toSave.value.replace(/\s+/g, " ").trim();
-				MatryoshkaPen.storeNestable( toSave.value, toSave.key, key );
-			});
-		});
 	};
 
 	// This method will be run on blur on all pen editor fields.
@@ -56,10 +59,12 @@ function MatryoshkaPenHandler() {
 		// For Firefox...
 		editorElement.find('[type=_moz]').remove();
 
-		var editorHtml = editorElement.html();
-		var htmlLen = editorHtml.replace(/ /g, '').replace(/\n/g, '').length;
-		// var textLen = editorElement.text().replace(/(\r\n|\n|\r)/gm,'').replace(/ /g, '').length;
-		
+		// Let's get the length of the html inside the editor
+		var htmlLen = editorElement.html().replace(/ /g, '').replace(/\n/g, '').length;
+			
+		// If there is none, we don't even have a <p>, and that's not cool!
+		// Let's add one if so, blur() the input and the focus on it again
+		// (placing the cursor back inside the new <p>[users cursor is here!]</p>)
 		if (htmlLen < 1) {
 			console.log('adding <p> since content is all empty...');
 			editorElement.html('<p>&nbsp;</p>').blur();
@@ -68,24 +73,28 @@ function MatryoshkaPenHandler() {
 			}, 1);
 		}
 
+		// Let's make real sure there is at least on block level element in the editor!
 		that.htmlMakeSureThereIsABlockElement( editorElement );
 
+		// If there are any span elements, replace them with only their content.
+		// So the following HTML:
+		// <p>Hi this is <span style="border: 1px;">Something cOoL!</span></p>
+		// becomes just:
+		// <p>Hi this is Something cOoL!</p>
 		editorElement.find('span').replaceWith( editorElement.find('span').contents() );
 
 	};
 
 	that.htmlMakeSureThereIsABlockElement = function ( editorElement ) {
-		// Is there no child element?
-		// Meaning: there should be at least a p!
-		// BUG: There should be a block level element, <i> or <b> are not gonna do it!
+		// Get all elements which have display: block;
 		var blockLvlChildren = editorElement.children().filter(function() {
 			return $(this).css("display") === "block";
 		});
 
-		if ( blockLvlChildren.length < 1 ) {
-			console.log('wrapping inner with a <p> cause there are no inner elements...');
+		// If there is none, add a <p>!
+		if ( blockLvlChildren.length < 1 )
 			editorElement.wrapInner('<p />');
-		}
+		
 	};
 
 
