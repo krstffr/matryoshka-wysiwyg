@@ -11,7 +11,8 @@ function MatryoshkaPenHandler() {
 			// Iterate over each "cached" field content and store it.
 			_.each(that.nestablesToSaveLater, function( toSave, key ){
 				// Prepare the stuff to be saved, remove all space chars.
-				toSave.value = toSave.value.replace(/\s+/g, " ").trim();
+				// And also convert it to markdown!
+				toSave.value = toMarkdown( toSave.value.replace(/\s+/g, " ").trim() );
 				MatryoshkaPen.storeNestable( toSave.value, toSave.key, key );
 			});
 			return Session.get('matryoshkaCurrentNestable');
@@ -94,7 +95,7 @@ function MatryoshkaPenHandler() {
 		// If there is none, add a <p>!
 		if ( blockLvlChildren.length < 1 )
 			editorElement.wrapInner('<p />');
-		
+
 	};
 
 

@@ -2,7 +2,7 @@
 	
 	{{#if browserIsSupported }}
 
-		<div id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-pen-editor">{{{ matryoshka__getFieldValue ../.. }}}</div>
+		<div id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-pen-editor">{{#markdown}}{{{ matryoshka__getFieldValue ../.. }}}{{/markdown}}</div>
 
 	{{else}}
 
