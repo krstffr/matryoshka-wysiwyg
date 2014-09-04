@@ -98,6 +98,10 @@ function MatryoshkaPenHandler() {
 
 	};
 
+	that.isBrowserCompatible = function () {
+		return navigator.userAgent.toLowerCase().match(/chrome|safari|firefox/g);
+	};
+
 
 	that.init = function () {
 		// Add support for the "pen" field type

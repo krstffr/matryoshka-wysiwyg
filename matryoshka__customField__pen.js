@@ -18,7 +18,7 @@ Template.matryoshka__customField__pen.helpers({
 	browserIsSupported: function () {
 		// Make sure we're on chrome or safari.
 		// Well, in theroy at least.
-		return navigator.userAgent.toLowerCase().match(/chrome|safari/g);
+		return MatryoshkaPen.isBrowserCompatible();
 	}
 });
 
