@@ -25,7 +25,6 @@ function MatryoshkaWysiwygHandler() {
 		anchorInputPlaceholder: 'Type a link',
 		firstHeader: 'h3',
 		secondHeader: 'h4',
-		disableDoubleReturn: true,
 		buttons: ['bold',	'italic',	'underline',	'anchor',	'header1', 'header2', 'unorderedlist', 'orderedlist', 'image']
 	};
 
@@ -50,7 +49,7 @@ function MatryoshkaWysiwygHandler() {
 			var currentHtml = $(this).html();
 			$(this).height( $(this).height() ).html(' ').html( currentHtml );
 		});
-		return Matryoshka.addValueInObjectBasedOnId( doc, matryoshkaId, 'put', key, value);
+		return Matryoshka.nestables.modifyNestableBasedOnId( doc, matryoshkaId, 'put', key, value);
 	};
 
 	// This method will be run on blur on all wysiwyg editor fields.
