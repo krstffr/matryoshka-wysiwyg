@@ -25,7 +25,18 @@ function MatryoshkaWysiwygHandler() {
 		anchorInputPlaceholder: 'Type a link',
 		firstHeader: 'h3',
 		secondHeader: 'h4',
+		disableDoubleReturn: true,
 		buttons: ['bold',	'italic',	'underline',	'anchor',	'header1', 'header2', 'unorderedlist', 'orderedlist', 'image']
+	};
+
+	that.debugger = {};
+
+	that.debugger.debugMode = true;
+
+	that.debugger.log = function ( msg ) {
+		if (!that.debugger.debugMode)
+			return ;
+		console.log( msg );
 	};
 
 	// Here all changes are stored, and will be saved when we choose to
@@ -76,7 +87,7 @@ function MatryoshkaWysiwygHandler() {
 
 		// Remove all spans, replace them with their inner content
 		editorElement.find('span').each(function () {
-			console.log('removing span: ', $(this) );
+			that.debugger.log('removing span: ', $(this) );
 			$(this).replaceWith( $(this).contents() );
 		});
 
@@ -84,14 +95,14 @@ function MatryoshkaWysiwygHandler() {
 		editorElement.find('p > ol, p > ul, p > p, p > div, li > p').each(function () {
 			// Make sure we're not unwrapping the editor!
 			if ( !$(this).parent().hasClass('matryoshka-wysiwyg-editor') ) {
-				console.log('unwrapping: ', $(this) );
+				that.debugger.log('unwrapping: ', $(this) );
 				$(this).unwrap().focus();
 			}
 		});
 
 		editorElement.find('br').each(function () {
 			if (!$(this).parent().is("p") || ( $(this).prev().is("img") && $(this).parent().is("p")) ) {
-				console.log('removing <br>: ', $(this) );
+				that.debugger.log('removing <br>: ', $(this) );
 				$(this).remove();
 			}
 		});

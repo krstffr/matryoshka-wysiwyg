@@ -10,6 +10,7 @@ if (typeof he !== 'object' && typeof require === 'function') {
   var he = require('he');
 }
 
+// Var switch-around for scope!
 toMarkdown = function(string) {
 
   var ELEMENTS = [
