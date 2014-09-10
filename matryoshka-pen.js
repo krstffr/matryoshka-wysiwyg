@@ -7,15 +7,15 @@ function MatryoshkaPenHandler() {
 	that.fieldTypeObject = {
 		name: 'pen',
 		templateFileName: 'matryoshka__customField__pen',
-		saveMethod: function () {
+		saveMethod: function ( doc ) {
 			// Iterate over each "cached" field content and store it.
 			_.each(that.nestablesToSaveLater, function( toSave, key ){
 				// Prepare the stuff to be saved, remove all space chars.
 				// And also convert it to markdown!
 				toSave.value = toMarkdown( toSave.value.replace(/\s+/g, " ").trim() );
-				MatryoshkaPen.storeNestable( toSave.value, toSave.key, key );
+				doc = that.storeNestable( doc, toSave.value, toSave.key, key );
 			});
-			return Session.get('matryoshkaCurrentNestable');
+			return doc;
 		}
 	};
 
@@ -23,7 +23,7 @@ function MatryoshkaPenHandler() {
 	// Maybe these should include more stuff?
 	that.editorOptions = {
 		class: 'pen',
-		list: ['bold', 'italic', 'h1', 'h2', 'h3', 'createlink'],
+		list: ['bold', 'italic', 'h1', 'h2', 'h3', 'h4', 'p', 'createlink', 'insertorderedlist', 'insertunorderedlist', 'underline'],
 		stay: false
 	};
 
@@ -33,12 +33,12 @@ function MatryoshkaPenHandler() {
 	// The custom method for storing the data from the pen editor.
 	// Is needed because of weird current-HTML-content-vs-the-session-contents bug.
 	// Probably something with contenteditable vs. Meteor.js
-	that.storeNestable = function ( value, key, matryoshkaId ) {
+	that.storeNestable = function ( doc, value, key, matryoshkaId ) {
 		$('.matryoshka-pen-editor--to-be-saved').each(function () {
-			$(this).height( $(this).height() ).html(' ');
+			var currentHtml = $(this).html();
+			$(this).height( $(this).height() ).html(' ').html( currentHtml );
 		});
-		var updatedSession = Matryoshka.addValueInObjectBasedOnId( Session.get('matryoshkaCurrentNestable'), matryoshkaId, 'put', key, value);
-		Session.set('matryoshkaCurrentNestable', updatedSession );
+		return Matryoshka.addValueInObjectBasedOnId( doc, matryoshkaId, 'put', key, value);
 	};
 
 	// This method will be run on blur on all pen editor fields.
@@ -70,12 +70,21 @@ function MatryoshkaPenHandler() {
 			console.log('adding <p> since content is all empty...');
 			editorElement.html('<p>&nbsp;</p>').blur();
 			Meteor.setTimeout(function () {
+				console.log('blur() and focus()');
 				editorElement.focus();
 			}, 1);
 		}
 
 		// Let's make real sure there is at least on block level element in the editor!
 		that.htmlMakeSureThereIsABlockElement( editorElement );
+
+		var listsInsideParagraphs = editorElement.find('p > ul, p > ol');
+
+		if (listsInsideParagraphs.length) {
+			// Thisis for a bug!
+			// var cachedContents = listsInsideParagraphs.html();
+			// listsInsideParagraphs.unwrap();
+		}
 
 		// If there are any span elements, replace them with only their content.
 		// So the following HTML:
@@ -93,8 +102,10 @@ function MatryoshkaPenHandler() {
 		});
 
 		// If there is none, add a <p>!
-		if ( blockLvlChildren.length < 1 )
+		if ( blockLvlChildren.length < 1 ) {
+			console.log('wrapping with <p />…');
 			editorElement.wrapInner('<p />');
+		}
 
 	};
 
