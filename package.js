@@ -1,16 +1,13 @@
 Package.describe({
-    summary: "Pen-editor support for Matryoshka.",
+    summary: "Wysiwyg support for Matryoshka.",
 });
 
-Package.on_use(function (api) {
+Package.onUse(function (api) {
   
-  // Main Pen stuff
-    // The icon font
-    api.add_files(['lib/src/font/fontello.eot', 'lib/src/font/fontello.svg', 'lib/src/font/fontello.ttf', 'lib/src/font/fontello.woff'], 'client');
-    // CSS
-    api.add_files('lib/src/pen.css', 'client');
-    // JS
-    api.add_files('lib/src/pen.js', 'client');
+  // Main Medium-Editor stuff
+  api.add_files('medium-editor/medium-editor.min.js', 'client');
+  api.add_files('medium-editor/medium-editor.min.css', 'client');
+  api.add_files('medium-editor/themes/default.min.css', 'client');
 
   // to-markdown, from: https://github.com/domchristie/to-markdown/
   // This way of including it does NOT feel great, but since it's a NPM
@@ -18,12 +15,12 @@ Package.on_use(function (api) {
   // this (that I know of).
   // Also: the 'var' in the beginning of 'var toMarkdown =' is removed by me.
   // Cause else that var is hidden. And we don't want that.
-    // JS
-    api.add_files('to-markdown/to-markdown.js', 'client');
+  // JS
+  api.add_files('to-markdown/to-markdown.js', 'client');
 
-  // Matryoshka Pen stuff
-    // The HTML, JS and CSS.
-    api.add_files(['matroyshka-pen.css', 'matryoshka-pen.js', 'matryoshka__customField__pen.html', 'matryoshka__customField__pen.js'], 'client');
+  // Matryoshka Wysiwyg stuff
+  // The HTML, JS and CSS.
+  api.add_files(['matroyshka-wysiwyg.css', 'matryoshka-wysiwyg.js', 'matryoshka__customField__wysiwyg.html', 'matryoshka__customField__wysiwyg.js'], 'client');
 
   // We need to use Matryoshka and Template-stuff on the client
   api.use(['showdown', 'matryoshka', 'templating'], 'client');

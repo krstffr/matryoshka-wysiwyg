@@ -1,12 +1,12 @@
-function MatryoshkaPenHandler() {
+function MatryoshkaWysiwygHandler() {
 
 	var that = this;
 
 	// This is for setting up the field type in Matryoshka.
-	// Else Matryoshka will think the "pen" type is invalid.
+	// Else Matryoshka will think the "wysiwyg" type is invalid.
 	that.fieldTypeObject = {
-		name: 'pen',
-		templateFileName: 'matryoshka__customField__pen',
+		name: 'wysiwyg',
+		templateFileName: 'matryoshka__customField__wysiwyg',
 		saveMethod: function ( doc ) {
 			// Iterate over each "cached" field content and store it.
 			_.each(that.nestablesToSaveLater, function( toSave, key ){
@@ -22,33 +22,34 @@ function MatryoshkaPenHandler() {
 	// These are the default options for the editor.
 	// Maybe these should include more stuff?
 	that.editorOptions = {
-		class: 'pen',
-		list: ['bold', 'italic', 'h1', 'h2', 'h3', 'h4', 'p', 'createlink', 'insertorderedlist', 'insertunorderedlist', 'underline'],
-		stay: false
+		anchorInputPlaceholder: 'Type a link',
+		firstHeader: 'h3',
+		secondHeader: 'h4',
+		buttons: ['bold',	'italic',	'underline',	'anchor',	'header1', 'header2', 'unorderedlist', 'orderedlist', 'image']
 	};
 
 	// Here all changes are stored, and will be saved when we choose to
 	that.nestablesToSaveLater = {};
 
-	// The custom method for storing the data from the pen editor.
+	// The custom method for storing the data from the wysiwyg editor.
 	// Is needed because of weird current-HTML-content-vs-the-session-contents bug.
 	// Probably something with contenteditable vs. Meteor.js
 	that.storeNestable = function ( doc, value, key, matryoshkaId ) {
-		$('.matryoshka-pen-editor--to-be-saved').each(function () {
+		$('.matryoshka-wysiwyg-editor--to-be-saved').each(function () {
 			var currentHtml = $(this).html();
 			$(this).height( $(this).height() ).html(' ').html( currentHtml );
 		});
 		return Matryoshka.addValueInObjectBasedOnId( doc, matryoshkaId, 'put', key, value);
 	};
 
-	// This method will be run on blur on all pen editor fields.
-	that.storePenContentOnBlur = function ( e, tmpl, context ) {
+	// This method will be run on blur on all wysiwyg editor fields.
+	that.storeWysiwygContentOnBlur = function ( e, tmpl, context ) {
 
-		var input = $(tmpl.find('.matryoshka-pen-editor'));
+		var input = $(tmpl.find('.matryoshka-wysiwyg-editor'));
 		var matryoshkaId = input.data('parent-id');
 
 		// Add the id, key and value to be saved later
-		MatryoshkaPen.nestablesToSaveLater[ matryoshkaId ] = {
+		MatryoshkaWysiwyg.nestablesToSaveLater[ matryoshkaId ] = {
 			key: context.name,
 			value: input.html()
 		};
@@ -67,55 +68,43 @@ function MatryoshkaPenHandler() {
 		// Let's add one if so, blur() the input and the focus on it again
 		// (placing the cursor back inside the new <p>[users cursor is here!]</p>)
 		if (htmlLen < 1) {
-			console.log('adding <p> since content is all empty...');
 			editorElement.html('<p>&nbsp;</p>').blur();
 			Meteor.setTimeout(function () {
-				console.log('blur() and focus()');
 				editorElement.focus();
 			}, 1);
 		}
 
-		// Let's make real sure there is at least on block level element in the editor!
-		that.htmlMakeSureThereIsABlockElement( editorElement );
-
-		var listsInsideParagraphs = editorElement.find('p > ul, p > ol');
-
-		if (listsInsideParagraphs.length) {
-			// Thisis for a bug!
-			// var cachedContents = listsInsideParagraphs.html();
-			// listsInsideParagraphs.unwrap();
-		}
-
-		// If there are any span elements, replace them with only their content.
-		// So the following HTML:
-		// <p>Hi this is <span style="border: 1px;">Something cOoL!</span></p>
-		// becomes just:
-		// <p>Hi this is Something cOoL!</p>
-		editorElement.find('span').replaceWith( editorElement.find('span').contents() );
-
-	};
-
-	that.htmlMakeSureThereIsABlockElement = function ( editorElement ) {
-		// Get all elements which have display: block;
-		var blockLvlChildren = editorElement.children().filter(function() {
-			return $(this).css("display") === "block";
+		// Remove all spans, replace them with their inner content
+		editorElement.find('span').each(function () {
+			console.log('removing span: ', $(this) );
+			$(this).replaceWith( $(this).contents() );
 		});
 
-		// If there is none, add a <p>!
-		if ( blockLvlChildren.length < 1 ) {
-			console.log('wrapping with <p />…');
-			editorElement.wrapInner('<p />');
-		}
+		// No weird nesting!!
+		editorElement.find('p > ol, p > ul, p > p, p > div, li > p').each(function () {
+			// Make sure we're not unwrapping the editor!
+			if ( !$(this).parent().hasClass('matryoshka-wysiwyg-editor') ) {
+				console.log('unwrapping: ', $(this) );
+				$(this).unwrap().focus();
+			}
+		});
+
+		editorElement.find('br').each(function () {
+			if (!$(this).parent().is("p") || ( $(this).prev().is("img") && $(this).parent().is("p")) ) {
+				console.log('removing <br>: ', $(this) );
+				$(this).remove();
+			}
+		});
 
 	};
 
 	that.isBrowserCompatible = function () {
-		return navigator.userAgent.toLowerCase().match(/chrome|safari|firefox/g);
+		return navigator.userAgent.toLowerCase().match(/chrome|safari/g);
 	};
 
 
 	that.init = function () {
-		// Add support for the "pen" field type
+		// Add support for the "wysiwyg" field type
 		Matryoshka.userDefinedFields.add( that.fieldTypeObject );
 	};
 
@@ -123,4 +112,4 @@ function MatryoshkaPenHandler() {
 
 }
 
-MatryoshkaPen = new MatryoshkaPenHandler();
+MatryoshkaWysiwyg = new MatryoshkaWysiwygHandler();

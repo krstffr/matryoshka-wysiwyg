@@ -1,0 +1,13 @@
+<template name="matryoshka__customField__wysiwyg">
+	
+	{{#if browserIsSupported }}
+
+		<div id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-wysiwyg-editor">{{#markdown}}{{{ matryoshka__getFieldValue ../.. }}}{{/markdown}}</div>
+
+	{{else}}
+
+		<textarea id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-save-on-blur">{{ matryoshka__getFieldValue ../.. }}</textarea>
+
+	{{/if}}
+
+</template>
