@@ -1,3 +1,7 @@
+.matryoshka-wysiwyg-editor-wrapper {
+	position: relative;
+}
+
 .matryoshka-wysiwyg-editor {
 	min-height: 1.5em;
 	border: 1px solid #eee;
@@ -45,18 +49,19 @@
 .matryoshka-wysiwyg-editor h2,
 .matryoshka-wysiwyg-editor h3,
 .matryoshka-wysiwyg-editor h4 {
-	font-size: 1.8em;
+	font-size: 2em;
 	line-height: 1.3;
+	font-weight: bold;
 	margin: 0;
 	padding: 0.2em 0 0.6em;
 }
 
 .matryoshka-wysiwyg-editor h2 {
-	font-size: 1.5em;
+	font-size: 1.6em;
 }
 
 .matryoshka-wysiwyg-editor h3 {
-	font-size: 1.25em;
+	font-size: 1.3em;
 }
 
 .matryoshka-wysiwyg-editor h4 {
@@ -68,6 +73,18 @@
 	height: auto;
 	max-width: 70%;
 	max-height: 400px;
+}
+
+.matryoshka__body .matryoshka-wysiwyg-button-toggle {
+	padding-left: 1em;
+	padding-right: 1em;
+	position: absolute;
+	right: 0.6em;
+	top: 0.6em;
+}
+
+.matryoshka__body .matryoshka-wysiwyg-button-toggle .fa {
+	margin: 0;
 }
 
 .medium-editor-toolbar-actions button {
