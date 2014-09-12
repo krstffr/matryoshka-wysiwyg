@@ -8,14 +8,24 @@ function MatryoshkaWysiwygHandler() {
 		name: 'wysiwyg',
 		templateFileName: 'matryoshka__customField__wysiwyg',
 		saveMethod: function ( doc ) {
+
 			// Iterate over each "cached" field content and store it.
 			_.each(that.nestablesToSaveLater, function( toSave, key ){
 				// Prepare the stuff to be saved, remove all space chars.
 				// And also convert it to markdown!
+				that.debugger.log('a doc to save!');
 				toSave.value = toMarkdown( toSave.value.replace(/\s+/g, " ").trim() );
 				doc = that.storeNestable( doc, toSave.value, toSave.key, key );
 			});
+
+			if ( _(that.nestablesToSaveLater).keys().length )
+				throw new Error('Not all keys of MatryoshkaWysiwygHandler.nestablesToSaveLater were deleted!', that.nestablesToSaveLater);
+			else
+				that.nestablesToSaveLater = {};
+
+			// Return the doc to Matryoshka.
 			return doc;
+
 		}
 	};
 
@@ -45,11 +55,12 @@ function MatryoshkaWysiwygHandler() {
 	// Is needed because of weird current-HTML-content-vs-the-session-contents bug.
 	// Probably something with contenteditable vs. Meteor.js
 	that.storeNestable = function ( doc, value, key, matryoshkaId ) {
-		$('.matryoshka-wysiwyg-editor--to-be-saved').each(function () {
-			var currentHtml = $(this).html();
-			$(this).height( $(this).height() ).html(' ').html( currentHtml );
-		});
+		
+		// Reset the cached nestable!
+		delete that.nestablesToSaveLater[matryoshkaId];
+
 		return Matryoshka.nestables.modifyNestableBasedOnId( doc, matryoshkaId, 'put', key, value);
+
 	};
 
 	// This method will be run on blur on all wysiwyg editor fields.
@@ -63,6 +74,7 @@ function MatryoshkaWysiwygHandler() {
 			key: context.name,
 			value: input.html()
 		};
+
 	};
 
 	// Method for cleaning up the generated HTML
@@ -112,10 +124,17 @@ function MatryoshkaWysiwygHandler() {
 		return navigator.userAgent.toLowerCase().match(/chrome|safari/g);
 	};
 
+	that.isEditorActive = function () {
+		return Session.get('matryoshka__wysiwyg__is-active');
+	};
+
 
 	that.init = function () {
 		// Add support for the "wysiwyg" field type
 		Matryoshka.userDefinedFields.add( that.fieldTypeObject );
+		Meteor.startup(function () {
+			Session.setDefault('matryoshka__wysiwyg__is-active', true );
+		});
 	};
 
 	that.init();

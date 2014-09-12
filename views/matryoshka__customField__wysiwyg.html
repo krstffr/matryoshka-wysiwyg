@@ -1,13 +1,21 @@
 <template name="matryoshka__customField__wysiwyg">
-	
-	{{#if browserIsSupported }}
 
-		<div id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-wysiwyg-editor">{{#markdown}}{{{ matryoshka__getFieldValue ../.. }}}{{/markdown}}</div>
+	<div class="matryoshka-wysiwyg-editor-wrapper">
 
-	{{else}}
+		{{#if browserIsSupportedAndEditorIsActivated }}
 
-		<textarea id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-save-on-blur">{{ matryoshka__getFieldValue ../.. }}</textarea>
+			<div id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-wysiwyg-editor">{{#markdown}}{{{ matryoshka__getFieldValue ../.. }}}{{/markdown}}</div>
 
-	{{/if}}
+			<button class="matryoshka__nestable__container__button matryoshka-wysiwyg-button-toggle">
+				<i class="fa fa-times"></i>
+			</button>
+
+		{{else}}
+
+			<textarea id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-save-on-blur">{{ matryoshka__getFieldValue ../.. }}</textarea>
+
+		{{/if}}
+
+	</div>
 
 </template>
