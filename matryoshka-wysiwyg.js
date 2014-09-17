@@ -8,9 +8,7 @@ function MatryoshkaWysiwygHandler() {
 		name: 'wysiwyg',
 		templateFileName: 'matryoshka__customField__wysiwyg',
 		initMethod: function () {
-			Meteor.startup(function () {
-				Session.setDefault('matryoshka__wysiwyg__is-active', true );
-			});
+			Session.setDefault('matryoshka__wysiwyg__is-active', true );
 		},
 		saveMethod: function ( doc ) {
 
@@ -45,7 +43,7 @@ function MatryoshkaWysiwygHandler() {
 
 	that.debugger = {};
 
-	that.debugger.debugMode = true;
+	that.debugger.debugMode = false;
 
 	that.debugger.log = function ( msg ) {
 		if (!that.debugger.debugMode)
