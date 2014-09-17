@@ -7,6 +7,11 @@ function MatryoshkaWysiwygHandler() {
 	that.fieldTypeObject = {
 		name: 'wysiwyg',
 		templateFileName: 'matryoshka__customField__wysiwyg',
+		initMethod: function () {
+			Meteor.startup(function () {
+				Session.setDefault('matryoshka__wysiwyg__is-active', true );
+			});
+		},
 		saveMethod: function ( doc ) {
 
 			// Iterate over each "cached" field content and store it.
@@ -132,9 +137,6 @@ function MatryoshkaWysiwygHandler() {
 	that.init = function () {
 		// Add support for the "wysiwyg" field type
 		Matryoshka.userDefinedFields.add( that.fieldTypeObject );
-		Meteor.startup(function () {
-			Session.setDefault('matryoshka__wysiwyg__is-active', true );
-		});
 	};
 
 	that.init();
