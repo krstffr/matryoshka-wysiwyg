@@ -14,11 +14,29 @@ function MatryoshkaWysiwygHandler() {
 
 			// Iterate over each "cached" field content and store it.
 			_.each(that.nestablesToSaveLater, function( toSave, key ){
-				// Prepare the stuff to be saved, remove all space chars.
-				// And also convert it to markdown!
 				that.debugger.log('a doc to save!');
-				toSave.value = toMarkdown( toSave.value.replace(/\s+/g, " ").trim() );
+
+				// Change all extra spaces to "ordinary" spaces
+				toSave.value = toSave.value.replace(/&nbsp;/g, ' ');
+				
+				// Remove all extra space chars
+				toSave.value = toSave.value.replace(/\s+/g, " ").trim();
+				
+				// Change all <br> to a temp string which after the conversion gets
+				// replace to markdown breaks.
+				toSave.value = toSave.value.replace(/<br>/g, "BREAKHERE");
+
+				// Replace all spaces before closing tags
+				toSave.value = toSave.value.replace(/ <\//g, '</');
+
+				// Convert to markdown
+				toSave.value = toMarkdown( toSave.value );
+
+				// Add the line breaks from the temp values 
+				toSave.value = toSave.value.replace(/BREAKHERE/g, "  \n");
+
 				doc = that.storeNestable( doc, toSave.value, toSave.key, key );
+
 			});
 
 			if ( _(that.nestablesToSaveLater).keys().length )
@@ -88,7 +106,7 @@ function MatryoshkaWysiwygHandler() {
 
 		// Let's get the length of the html inside the editor
 		var htmlLen = editorElement.html().replace(/ /g, '').replace(/\n/g, '').length;
-			
+
 		// If there is none, we don't even have a <p>, and that's not cool!
 		// Let's add one if so, blur() the input and the focus on it again
 		// (placing the cursor back inside the new <p>[users cursor is here!]</p>)
@@ -106,7 +124,7 @@ function MatryoshkaWysiwygHandler() {
 		});
 
 		// No weird nesting!!
-		editorElement.find('p > ol, p > ul, p > p, p > div, li > p').each(function () {
+		editorElement.find('p > ol, p > ul, p > p, p > div, li > p, p > h1, p > h2, p > h3, p > h4').each(function () {
 			// Make sure we're not unwrapping the editor!
 			if ( !$(this).parent().hasClass('matryoshka-wysiwyg-editor') ) {
 				that.debugger.log('unwrapping: ', $(this) );
@@ -118,6 +136,18 @@ function MatryoshkaWysiwygHandler() {
 			if (!$(this).parent().is("p") || ( $(this).prev().is("img") && $(this).parent().is("p")) ) {
 				that.debugger.log('removing <br>: ', $(this) );
 				$(this).remove();
+			}
+		});
+
+		// Wrap everything which is unwrapped!
+		editorElement.contents().map(function () {
+			// If it's just an empty string, don't do nothing.
+			if ( $(this).text().replace(/\s+/g, " ").trim() === '' )
+				return false;
+			// If nodetype is 3, it's an unwrapped string! Wrap that in a <p>
+			if (this.nodeType === 3) {
+				that.debugger.log('wrapping with <p>: ', $(this) );
+				return $(this).wrap('<p></p>');
 			}
 		});
 
