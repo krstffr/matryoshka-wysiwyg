@@ -26,6 +26,6 @@ Package.onUse(function (api) {
   api.add_files(['css/matroyshka-wysiwyg.css'], 'client');
 
   // We need to use Matryoshka and Template-stuff on the client
-  api.use(['showdown', 'matryoshka', 'templating'], 'client');
+  api.use(['showdown', 'krstffr:matryoshka', 'templating'], 'client');
 
 });
