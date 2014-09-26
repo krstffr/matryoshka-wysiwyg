@@ -1,8 +1,0 @@
-{
-  "name": "krstffr:matryoshka-wysiwyg",
-  "description": "Wysiwyg support for Matryoshka",
-  "homepage": "https://github.com/krstffr/meteor-matryoshka-wysiwyg",
-  "author": "Kristoffer Klintberg <krstffr@gmail.com>",
-  "version": "0.0.1",
-  "git": "https://github.com/krstffr/meteor-matryoshka-wysiwyg.git"
-}
