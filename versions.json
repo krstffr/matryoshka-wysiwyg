@@ -1,40 +1,12 @@
 {
   "dependencies": [
     [
-      "accounts-base",
-      "1.1.2"
-    ],
-    [
-      "accounts-password",
-      "1.0.3"
-    ],
-    [
-      "application-configuration",
-      "1.0.3"
-    ],
-    [
       "base64",
-      "1.0.1"
-    ],
-    [
-      "binary-heap",
       "1.0.1"
     ],
     [
       "blaze",
       "2.0.2"
-    ],
-    [
-      "callback-hook",
-      "1.0.1"
-    ],
-    [
-      "check",
-      "1.0.2"
-    ],
-    [
-      "ddp",
-      "1.0.10"
     ],
     [
       "deps",
@@ -43,14 +15,6 @@
     [
       "ejson",
       "1.0.4"
-    ],
-    [
-      "email",
-      "1.0.4"
-    ],
-    [
-      "follower-livedata",
-      "1.0.2"
     ],
     [
       "geojson-utils",
@@ -94,19 +58,7 @@
     ],
     [
       "krstffr:matryoshka",
-      "1.0.15"
-    ],
-    [
-      "krstffr:msgs",
-      "0.0.3"
-    ],
-    [
-      "localstorage",
-      "1.0.1"
-    ],
-    [
-      "logging",
-      "1.0.4"
+      "1.0.2"
     ],
     [
       "markdown",
@@ -119,14 +71,6 @@
     [
       "minimongo",
       "1.0.4"
-    ],
-    [
-      "mongo",
-      "1.0.7"
-    ],
-    [
-      "npm-bcrypt",
-      "0.7.7"
     ],
     [
       "observe-sequence",
@@ -153,24 +97,8 @@
       "1.0.3"
     ],
     [
-      "retry",
-      "1.0.1"
-    ],
-    [
-      "service-configuration",
-      "1.0.2"
-    ],
-    [
-      "sha",
-      "1.0.1"
-    ],
-    [
       "showdown",
       "1.0.2"
-    ],
-    [
-      "srp",
-      "1.0.1"
     ],
     [
       "templating",
