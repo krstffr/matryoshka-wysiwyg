@@ -1,0 +1,10 @@
+{
+	"packages": {
+		"krstffr:matryoshka-wysiwyg": {
+			"path": "../.."
+		},
+		"krstffr:matryoshka": {
+			"path": "../../../matryoshka"
+		}
+	}
+}
