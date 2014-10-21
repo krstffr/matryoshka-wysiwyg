@@ -1,4 +1,4 @@
-# matryoshka-wysiwyg
+# matryoshka-wysiwyg [![Build Status](https://travis-ci.org/krstffr/matryoshka-wysiwyg.svg?branch=master)](https://travis-ci.org/krstffr/matryoshka-wysiwyg)
 
 So you're using [matryoshka](https://github.com/krstffr/matryoshka) for your meteor.js project and want to use a fancy Medium-like-editor instead of your ordinary <textarea>'s? Sure, no problem! Just `mrt add matryoshka-wysiwyg` and set the type of the field to 'wysiwyg' instead of 'textarea'. Now you'll get some Medium-like stuff. And even though you're writing actual HTML the content will be saved as markdown (smaller and more portable in my opinion).
 
