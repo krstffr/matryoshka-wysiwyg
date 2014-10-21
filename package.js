@@ -2,7 +2,7 @@ Package.describe({
   summary: 'Wysiwyg support for Matryoshka.',
   name: 'krstffr:matryoshka-wysiwyg',
   git: "https://github.com/krstffr/meteor-matryoshka-wysiwyg.git",
-  version: '0.1.1'
+  version: '0.1.2'
 });
 
 Package.onUse(function ( api ) {
@@ -27,6 +27,8 @@ Package.onUse(function ( api ) {
 
   // We need to use Matryoshka and Template-stuff on the client
   api.use(['showdown', 'krstffr:matryoshka@1.0.2', 'templating', 'underscore'], 'client');
+
+  api.export('MatryoshkaWysiwyg', 'client');
 
 });
 

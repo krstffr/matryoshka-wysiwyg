@@ -14,26 +14,10 @@ function MatryoshkaWysiwygHandler() {
 
 			// Iterate over each "cached" field content and store it.
 			_.each(that.nestablesToSaveLater, function( toSave, key ){
+
 				that.debugger.log('a doc to save!');
 
-				// Change all extra spaces to "ordinary" spaces
-				toSave.value = toSave.value.replace(/&nbsp;/g, ' ');
-				
-				// Remove all extra space chars
-				toSave.value = toSave.value.replace(/\s+/g, " ").trim();
-				
-				// Change all <br> to a temp string which after the conversion gets
-				// replace to markdown breaks.
-				toSave.value = toSave.value.replace(/<br>/g, "BREAKHERE");
-
-				// Replace all spaces before closing tags
-				toSave.value = toSave.value.replace(/ <\//g, '</');
-
-				// Convert to markdown
-				toSave.value = toMarkdown( toSave.value );
-
-				// Add the line breaks from the temp values 
-				toSave.value = toSave.value.replace(/BREAKHERE/g, "  \n");
+				toSave.value = that.convertHtmlToMarkdown( toSave.value );
 
 				doc = that.storeNestable( doc, toSave.value, toSave.key, key );
 
@@ -85,15 +69,12 @@ function MatryoshkaWysiwygHandler() {
 	};
 
 	// This method will be run on blur on all wysiwyg editor fields.
-	that.storeWysiwygContentOnBlur = function ( e, tmpl, context ) {
-
-		var input = $(tmpl.find('.matryoshka-wysiwyg-editor'));
-		var matryoshkaId = input.data('parent-id');
+	that.storeWysiwygContentInCache = function ( key, value, matryoshkaId ) {
 
 		// Add the id, key and value to be saved later
 		MatryoshkaWysiwyg.nestablesToSaveLater[ matryoshkaId ] = {
-			key: context.name,
-			value: input.html()
+			key: key,
+			value: value
 		};
 
 	};
@@ -150,6 +131,31 @@ function MatryoshkaWysiwygHandler() {
 				return $(this).wrap('<p></p>');
 			}
 		});
+
+	};
+
+	that.convertHtmlToMarkdown = function ( htmlToConvert ) {
+
+		// Change all extra spaces to "ordinary" spaces
+		htmlToConvert = htmlToConvert.replace(/&nbsp;/g, ' ');
+		
+		// Remove all extra space chars
+		htmlToConvert = htmlToConvert.replace(/\s+/g, " ").trim();
+		
+		// Change all <br> to a temp string which after the conversion gets
+		// replace to markdown breaks.
+		htmlToConvert = htmlToConvert.replace(/<br>/g, "BREAKHERE");
+
+		// Replace all spaces before closing tags
+		htmlToConvert = htmlToConvert.replace(/ <\//g, '</');
+
+		// Convert to markdown
+		htmlToConvert = toMarkdown( htmlToConvert );
+
+		// Add the line breaks from the temp values 
+		htmlToConvert = htmlToConvert.replace(/BREAKHERE/g, "  \n");
+
+		return htmlToConvert;
 
 	};
 

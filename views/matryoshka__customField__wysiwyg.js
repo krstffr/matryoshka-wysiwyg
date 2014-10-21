@@ -38,10 +38,14 @@ Template.matryoshka__customField__wysiwyg.events({
 		Session.set('matryoshka__wysiwyg__is-active', !Session.get('matryoshka__wysiwyg__is-active') );
 	},
 	'blur .matryoshka-wysiwyg-editor': function ( e, tmpl ) {
+
 		// On blur we should store a cached version of the content.
-		var editorElement = $( e.currentTarget );
-		editorElement.addClass('matryoshka-wysiwyg-editor--to-be-saved');
-		MatryoshkaWysiwyg.storeWysiwygContentOnBlur( e, tmpl, this );
+		var key = this.name;
+		var value = $(tmpl.find('.matryoshka-wysiwyg-editor')).html();
+		var matryoshkaId = Template.parentData(1).matryoshkaId;
+
+		MatryoshkaWysiwyg.storeWysiwygContentInCache( key, value, matryoshkaId );
+
 	},
 	'input .matryoshka-wysiwyg-editor': function ( e, tmpl ) {
 		// On keyup we should make sure the HTML is as clean and nice as we want it to be.
