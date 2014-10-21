@@ -16,6 +16,7 @@ var nestableToUseForTests = {
 	matrysohkaId: rootMatryoshkaId,
 	nestedNestables: [ nestedNestableOne, nestedNestableTwo ]
 };
+nestableToUseForTests[keyToUpdate] = 'first value';
 
 Tinytest.add('Matryoshka - set() get() the nestable for testing', function (test) {
 
@@ -74,5 +75,30 @@ Tinytest.add('Matryoshka WYSIWYG - .convertHtmlToMarkdown( htmlToConvert )', fun
 	preparedDoc = MatryoshkaWysiwyg.convertHtmlToMarkdown( htmlToConvert );
 
 	test.equal( preparedDoc, targetHtml );
+
+	// Test bold/underline/italic
+	htmlToConvert = '<p><strong>This       is bold </strong></p>  \n \n <p>and <em>this is italic</em>. That is: <strong><em>both</em></strong>.</p>';
+	targetHtml = '**This is bold**\n\nand _this is italic_. That is: **_both_**.';
+
+	preparedDoc = MatryoshkaWysiwyg.convertHtmlToMarkdown( htmlToConvert );
+
+	test.equal( preparedDoc, targetHtml );
+
+});
+
+Tinytest.add('Matryoshka WYSIWYG - storeNestable( doc, value, key, matryoshkaId ) HMM?', function (test) {
+
+	var doc = Matryoshka.currentNestable.get();
+
+	// Make sure we have a nestable
+	test.isNotNull( doc.matryoshkaId );
+
+	var value = 'new value';
+	var matryoshkaId = 'root';
+
+	MatryoshkaWysiwyg.storeWysiwygContentInCache( keyToUpdate, value, matryoshkaId );
+
+	// Hmm, there is something fishy about this method.
+	var updatedDoc = MatryoshkaWysiwyg.storeNestable( doc, value, keyToUpdate, matryoshkaId );
 
 });
