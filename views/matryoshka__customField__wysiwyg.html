@@ -4,7 +4,7 @@
 
 		{{#if browserIsSupportedAndEditorIsActivated }}
 
-			<div id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-wysiwyg-editor">{{#markdown}}{{{ matryoshka__getFieldValue ../.. }}}{{/markdown}}</div>
+			<div id="{{ ../../matryoshkaId }}-{{this.name}}" class="matryoshka-wysiwyg-editor">{{#markdown}}{{{ matryoshka__getFieldValue ../.. }}}{{/markdown}}</div>
 
 			<button class="matryoshka__nestable__container__button matryoshka-wysiwyg-button-toggle">
 				<i class="fa fa-times"></i>
@@ -12,7 +12,7 @@
 
 		{{else}}
 
-			<textarea id="{{ ../../matryoshkaId }}-{{this.name}}" data-parent-id="{{ ../../matryoshkaId }}" class="matryoshka-save-on-blur">{{ matryoshka__getFieldValue ../.. }}</textarea>
+			<textarea id="{{ ../../matryoshkaId }}-{{this.name}}" class="matryoshka-save-on-blur">{{ matryoshka__getFieldValue ../.. }}</textarea>
 
 		{{/if}}
 
