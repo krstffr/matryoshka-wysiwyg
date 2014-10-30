@@ -2,7 +2,7 @@ Package.describe({
   summary: 'Wysiwyg support for Matryoshka.',
   name: 'krstffr:matryoshka-wysiwyg',
   git: "https://github.com/krstffr/meteor-matryoshka-wysiwyg.git",
-  version: '0.1.3'
+  version: '0.1.4'
 });
 
 Package.onUse(function ( api ) {
