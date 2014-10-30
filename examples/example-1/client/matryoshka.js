@@ -10,5 +10,8 @@ Matryoshka.nestables.add({
 	fields: [{
 		name: 'something',
 		type: 'wysiwyg'
+	}, {
+		name: 'anoterhField',
+		type: 'wysiwyg'
 	}]
 });

@@ -24,21 +24,25 @@ Tinytest.add('Matryoshka - set() get() the nestable for testing', function (test
 	Matryoshka.currentNestable.set(nestableToUseForTests);
 
 	test.equal(Matryoshka.currentNestable.get().matrysohkaId, rootMatryoshkaId );
-	test.equal(Matryoshka.currentNestable.get().nestedNestables[0].matrysohkaId, '1' );
+	test.equal(Matryoshka.currentNestable.get().nestedNestables[0].matrysohkaId, nestedNestableOne.matrysohkaId );
 
 });
 
 Tinytest.add('Matryoshka WYSIWYG - .storeWysiwygContentInCache( key, value, matrysohkaId )', function (test) {
 
 	var newValue = 'updated value';
-	var matrysohkaIdToUpdate = '1';
+	var matrysohkaIdToUpdate = nestedNestableOne.matrysohkaId;
+
+	var secondKey = 'another key';
+	var secondValue = 'another key';
 
 	test.isUndefined(MatryoshkaWysiwyg.nestablesToSaveLater[matrysohkaIdToUpdate]);
 
 	MatryoshkaWysiwyg.storeWysiwygContentInCache( keyToUpdate, newValue, matrysohkaIdToUpdate );
+	MatryoshkaWysiwyg.storeWysiwygContentInCache( secondKey, secondValue, matrysohkaIdToUpdate );
 
-	test.equal(MatryoshkaWysiwyg.nestablesToSaveLater[matrysohkaIdToUpdate].key, keyToUpdate);
-	test.equal(MatryoshkaWysiwyg.nestablesToSaveLater[matrysohkaIdToUpdate].value, newValue);
+	test.equal(MatryoshkaWysiwyg.nestablesToSaveLater[matrysohkaIdToUpdate][keyToUpdate], newValue);
+	test.equal(MatryoshkaWysiwyg.nestablesToSaveLater[matrysohkaIdToUpdate][secondKey], secondValue);
 
 });
 
@@ -86,7 +90,7 @@ Tinytest.add('Matryoshka WYSIWYG - .convertHtmlToMarkdown( htmlToConvert )', fun
 
 });
 
-Tinytest.add('Matryoshka WYSIWYG - storeNestable( doc, value, key, matryoshkaId ) HMM?', function (test) {
+Tinytest.add('Matryoshka WYSIWYG - .storeNestable( doc, value, key, matryoshkaId ) HMM?', function (test) {
 
 	var doc = Matryoshka.currentNestable.get();
 

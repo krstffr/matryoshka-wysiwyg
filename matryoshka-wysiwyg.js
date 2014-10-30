@@ -13,14 +13,13 @@ function MatryoshkaWysiwygHandler() {
 		saveMethod: function ( doc ) {
 
 			// Iterate over each "cached" field content and store it.
-			_.each(that.nestablesToSaveLater, function( toSave, key ){
-
-				that.debugger.log('a doc to save!');
-
-				toSave.value = that.convertHtmlToMarkdown( toSave.value );
-
-				doc = that.storeNestable( doc, toSave.value, toSave.key, key );
-
+			_.each(that.nestablesToSaveLater, function( nestable, matryoshkaId ){
+				// Iterate over every field in the nestable
+				_.each(nestable, function( value, key ){
+					that.debugger.log('a doc to save!');
+					value = that.convertHtmlToMarkdown( value );
+					doc = that.storeNestable( doc, value, key, matryoshkaId );
+				});
 			});
 
 			if ( _(that.nestablesToSaveLater).keys().length )
@@ -71,11 +70,10 @@ function MatryoshkaWysiwygHandler() {
 	// This method will be run on blur on all wysiwyg editor fields.
 	that.storeWysiwygContentInCache = function ( key, value, matryoshkaId ) {
 
-		// Add the id, key and value to be saved later
-		MatryoshkaWysiwyg.nestablesToSaveLater[ matryoshkaId ] = {
-			key: key,
-			value: value
-		};
+		if (!that.nestablesToSaveLater[ matryoshkaId ])
+			that.nestablesToSaveLater[ matryoshkaId ] = {};
+
+		that.nestablesToSaveLater[ matryoshkaId ][key] = value;
 
 	};
 
