@@ -16,7 +16,6 @@ function MatryoshkaWysiwygHandler() {
 			_.each(that.nestablesToSaveLater, function( nestable, matryoshkaId ){
 				// Iterate over every field in the nestable
 				_.each(nestable, function( value, key ){
-					that.debugger.log('a doc to save!');
 					value = that.convertHtmlToMarkdown( value );
 					doc = that.storeNestable( doc, value, key, matryoshkaId );
 				});
@@ -40,16 +39,6 @@ function MatryoshkaWysiwygHandler() {
 		firstHeader: 'h3',
 		secondHeader: 'h4',
 		buttons: ['bold',	'italic',	'underline',	'anchor',	'header1', 'header2', 'unorderedlist', 'orderedlist', 'image']
-	};
-
-	that.debugger = {};
-
-	that.debugger.debugMode = false;
-
-	that.debugger.log = function ( msg ) {
-		if (!that.debugger.debugMode)
-			return ;
-		console.log( msg );
 	};
 
 	// Here all changes are stored, and will be saved when we choose to
@@ -98,7 +87,6 @@ function MatryoshkaWysiwygHandler() {
 
 		// Remove all spans, replace them with their inner content
 		editorElement.find('span').each(function () {
-			that.debugger.log('removing span: ', $(this) );
 			$(this).replaceWith( $(this).contents() );
 		});
 
@@ -106,14 +94,12 @@ function MatryoshkaWysiwygHandler() {
 		editorElement.find('p > ol, p > ul, p > p, p > div, li > p, p > h1, p > h2, p > h3, p > h4').each(function () {
 			// Make sure we're not unwrapping the editor!
 			if ( !$(this).parent().hasClass('matryoshka-wysiwyg-editor') ) {
-				that.debugger.log('unwrapping: ', $(this) );
 				$(this).unwrap().focus();
 			}
 		});
 
 		editorElement.find('br').each(function () {
 			if (!$(this).parent().is("p") || ( $(this).prev().is("img") && $(this).parent().is("p")) ) {
-				that.debugger.log('removing <br>: ', $(this) );
 				$(this).remove();
 			}
 		});
@@ -125,7 +111,6 @@ function MatryoshkaWysiwygHandler() {
 				return false;
 			// If nodetype is 3, it's an unwrapped string! Wrap that in a <p>
 			if (this.nodeType === 3) {
-				that.debugger.log('wrapping with <p>: ', $(this) );
 				return $(this).wrap('<p></p>');
 			}
 		});
