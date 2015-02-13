@@ -22,8 +22,8 @@ iron:router@0.9.3
 jquery@1.11.3
 json@1.0.2
 krstffr:matryoshka@1.0.2
-krstffr:matryoshka-wysiwyg@0.1.6
-local-test:krstffr:matryoshka-wysiwyg@0.1.6
+krstffr:matryoshka-wysiwyg@0.2.1
+local-test:krstffr:matryoshka-wysiwyg@0.2.1
 logging@1.0.6
 markdown@1.0.3
 meteor@1.1.4
@@ -38,7 +38,6 @@ reactive-dict@1.0.5
 reactive-var@1.0.4
 retry@1.0.2
 routepolicy@1.0.4
-showdown@1.0.3
 spacebars@1.0.5
 spacebars-compiler@1.0.4
 templating@1.0.11
