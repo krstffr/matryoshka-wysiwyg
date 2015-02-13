@@ -1,0 +1,10 @@
+{
+	"public": {
+		"matryoshka-wysiwyg-editorOptions": {
+			"anchorInputPlaceholder": "Type a slinkalink?",
+			"firstHeader": "h2",
+			"secondHeader": "h3",
+			"buttons": ["bold",	"italic",	"underline",	"anchor",	"header1", "header2", "unorderedlist", "orderedlist", "image", "quote"]
+		}
+	}
+}

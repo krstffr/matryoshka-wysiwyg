@@ -75,6 +75,16 @@
 	max-height: 400px;
 }
 
+.matryoshka-wysiwyg-editor blockquote {
+	color: #aaa;
+	font-size: 1.2em;
+	background: #f5f5f5;
+	padding: 1em 1em 0.5em;
+}
+.matryoshka-wysiwyg-editor blockquote p {
+	padding-bottom: 0;
+}
+
 .matryoshka__body .matryoshka-wysiwyg-button-toggle {
 	padding-left: 1em;
 	padding-right: 1em;

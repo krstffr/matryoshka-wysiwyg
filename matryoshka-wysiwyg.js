@@ -33,13 +33,16 @@ function MatryoshkaWysiwygHandler() {
 	};
 
 	// These are the default options for the editor.
-	// Maybe these should include more stuff?
+	// Will be overridden by Meteor.settings.public["matryoshka-wysiwyg-editorOptions"]
 	that.editorOptions = {
 		anchorInputPlaceholder: 'Type a link',
 		firstHeader: 'h3',
 		secondHeader: 'h4',
 		buttons: ['bold',	'italic',	'underline',	'anchor',	'header1', 'header2', 'unorderedlist', 'orderedlist', 'image']
 	};
+
+	if (Meteor.settings && Meteor.settings.public && Meteor.settings.public["matryoshka-wysiwyg-editorOptions"])
+		that.editorOptions = Meteor.settings.public["matryoshka-wysiwyg-editorOptions"];
 
 	// Here all changes are stored, and will be saved when we choose to
 	that.nestablesToSaveLater = {};
@@ -101,6 +104,18 @@ function MatryoshkaWysiwygHandler() {
 		editorElement.find('br').each(function () {
 			if (!$(this).parent().is("p") || ( $(this).prev().is("img") && $(this).parent().is("p")) ) {
 				$(this).remove();
+			}
+		});
+
+		// Check if there are any blockquotes without wrapped child content
+		// (The contents of a blockquote should be wrapped in <p> at least!)
+		editorElement.find('blockquote').contents().map(function () {
+			// If it's just an empty string, don't do nothing.
+			if ( $(this).text().replace(/\s+/g, " ").trim() === '' )
+				return false;
+			// If nodetype is 3, it's an unwrapped string! Wrap that in a <p>
+			if (this.nodeType === 3) {
+				return $(this).wrap('<p></p>');
 			}
 		});
 
