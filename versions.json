@@ -1,12 +1,40 @@
 {
   "dependencies": [
     [
+      "accounts-base",
+      "1.1.2"
+    ],
+    [
+      "accounts-password",
+      "1.0.4"
+    ],
+    [
+      "application-configuration",
+      "1.0.3"
+    ],
+    [
       "base64",
+      "1.0.1"
+    ],
+    [
+      "binary-heap",
       "1.0.1"
     ],
     [
       "blaze",
       "2.0.3"
+    ],
+    [
+      "callback-hook",
+      "1.0.1"
+    ],
+    [
+      "check",
+      "1.0.2"
+    ],
+    [
+      "ddp",
+      "1.0.11"
     ],
     [
       "deps",
@@ -15,6 +43,14 @@
     [
       "ejson",
       "1.0.4"
+    ],
+    [
+      "email",
+      "1.0.4"
+    ],
+    [
+      "follower-livedata",
+      "1.0.2"
     ],
     [
       "geojson-utils",
@@ -33,20 +69,36 @@
       "1.0.1"
     ],
     [
+      "iron:controller",
+      "1.0.7"
+    ],
+    [
       "iron:core",
-      "0.3.4"
+      "1.0.7"
     ],
     [
       "iron:dynamic-template",
-      "0.4.1"
+      "1.0.7"
     ],
     [
       "iron:layout",
-      "0.4.1"
+      "1.0.7"
+    ],
+    [
+      "iron:location",
+      "1.0.7"
+    ],
+    [
+      "iron:middleware-stack",
+      "1.0.7"
     ],
     [
       "iron:router",
-      "0.9.3"
+      "1.0.7"
+    ],
+    [
+      "iron:url",
+      "1.0.7"
     ],
     [
       "jquery",
@@ -58,7 +110,19 @@
     ],
     [
       "krstffr:matryoshka",
-      "1.0.2"
+      "1.0.23"
+    ],
+    [
+      "krstffr:msgs",
+      "0.0.6"
+    ],
+    [
+      "localstorage",
+      "1.0.1"
+    ],
+    [
+      "logging",
+      "1.0.5"
     ],
     [
       "markdown",
@@ -71,6 +135,14 @@
     [
       "minimongo",
       "1.0.5"
+    ],
+    [
+      "mongo",
+      "1.0.8"
+    ],
+    [
+      "npm-bcrypt",
+      "0.7.7"
     ],
     [
       "observe-sequence",
@@ -97,8 +169,24 @@
       "1.0.3"
     ],
     [
+      "retry",
+      "1.0.1"
+    ],
+    [
+      "service-configuration",
+      "1.0.2"
+    ],
+    [
+      "sha",
+      "1.0.1"
+    ],
+    [
       "showdown",
       "1.0.2"
+    ],
+    [
+      "srp",
+      "1.0.1"
     ],
     [
       "templating",
