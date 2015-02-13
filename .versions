@@ -22,8 +22,8 @@ iron:router@0.9.3
 jquery@1.11.3
 json@1.0.2
 krstffr:matryoshka@1.0.2
-krstffr:matryoshka-wysiwyg@0.2.1
-local-test:krstffr:matryoshka-wysiwyg@0.2.1
+krstffr:matryoshka-wysiwyg@0.2.2
+local-test:krstffr:matryoshka-wysiwyg@0.2.2
 logging@1.0.6
 markdown@1.0.3
 meteor@1.1.4
